@@ -40,12 +40,6 @@ dependencies {
     compile 'org.eclipse.jetty:jetty-webapp:8.1.18.v20150929'
 
 
-//    compile 'org.eclipse.jetty:jetty-webapp:9.3.0.M2'
-//    compile 'org.eclipse.jetty:jetty-server:9.3.0.M2'
-//    compile 'org.eclipse.jetty:jetty-servlet:9.3.0.M2'
-
-//    compile 'com.sun.jersey.contribs:jersey-spring:1.19'
-//    compile 'org.easyrules:easyrules-spring:2.1.0'
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
 
@@ -56,12 +50,20 @@ task wrapper(type: Wrapper) {
 jar {
     baseName = 'dronz-app'
     version = '0.0.1-SNAPSHOT'
+    manifest {
+        attributes("Implementation-Title": "Gradle", "Implementation-Version": version)
+    }
 }
 
 shadowJar {
     baseName = 'dronz-app'
     version = '0.0.1-SNAPSHOT'
     mergeServiceFiles()
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer) { resource = 'META-INF/cxf/bus-extensions.txt' }
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.XmlAppendingTransformer) { resource = 'META-INF/cxf/cxf-extension-xml.xml' }
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.XmlAppendingTransformer) { resource = 'META-INF/cxf/cxf-extension-http-jetty.xml' }
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.XmlAppendingTransformer) { resource = 'META-INF/cxf/cxf-extension-http.xml' }
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.XmlAppendingTransformer) { resource = 'META-INF/cxf/cxf-servlet.xml' }
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.XmlAppendingTransformer) { resource = 'META-INF/cxf/cxf.xml' }
+
 }
-
-
